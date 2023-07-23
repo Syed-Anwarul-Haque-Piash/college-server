@@ -1,7 +1,7 @@
 const express = require('express')
 const cors=require('cors');
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
 require('dotenv').config();
 app.use(cors());
 app.use(express.json());
@@ -38,6 +38,13 @@ async function run() {
         const result=await collegeCollection.find().toArray();
         res.send(result);
     })
+    app.get('/allcollege/:id',async(req,res)=>{
+        const id=req.params.id;
+        console.log(id);
+        const result=await collegeCollection.findOne({_id:new ObjectId(id)});
+        res.send(result);
+        console.log(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
